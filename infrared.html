@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Built on Infrared | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html">Architecture</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html">Dash0</a>
+        <a href="elasticsearch.html">Elasticsearch</a>
+        <a href="gitar.html">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html" aria-current="page">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Built on Infrared</h1>
+      <p class="lead">How Infrared by Darkshift built, shipped and hosts Hero Goggles.</p>
+
+      <div class="sponsor-head"><span class="logo"><img src="assets/logos/infrared-landscape-color-white.svg" alt="Infrared" style="height:40px"></span></div>
+      <p>Hero Goggles was built and is hosted on Infrared by Darkshift: the platform where agents and humans ship software together. Everything here
+      ran on Infrared's hosted plane, <a href="https://infrared.darkshift.io">infrared.darkshift.io</a>, in the org save-the-world-org.</p>
+
+      <h2>Products and zones</h2>
+      <p>An app on Infrared is a Product: its repos, its zones and its releases. Hero Goggles is one Product with an umbrella chart: hero-goggles (the web
+      app) and influence-api deploy together into the zone <code>hero-goggles-production</code>; hero-goggles-ios and beacon-firmware are listed in the Product
+      (their issues, pull requests and summaries) but never built or deployed. These docs are a Product of their own, hero-goggles-docs.</p>
+
+      <h2>Buildpacks, no Dockerfiles</h2>
+      <p>Infrared builds each repo with Paketo buildpacks: it finds hero-goggles' <code>vite.config.js</code>, runs <code>npm run build</code> and serves
+      <code>dist/</code> with nginx; it runs influence-api's <code>npm start</code>; these docs are plain HTML, served as they are. One lesson from the day: a Node
+      app should pin <code>engines.node</code> to <code>22.x</code>, since <code>&gt;=22</code> picked a Node that the run image cannot load.</p>
+
+      <h2>Deployments</h2>
+      <p>A merge records a Release; a deployment ships it: <code>ir deployment new --product hero-goggles</code>, then
+      <code>ir deployment wait</code>. Each zone has its approval, a verify URL and a soak before it counts as released, and a guard that rolls back.</p>
+
+      <h2>gVisor and the edge</h2>
+      <p>Every tenant's pods run under gVisor (GKE Sandbox), behind a network fence per org. Public zones are served on <code>*.darkshift.cloud</code>
+      through Infrared's edge; Elasticsearch, Kibana and Radar run beside the apps on the same pool.</p>
+
+      <h2>The code index and the daily summary</h2>
+      <p>Infrared's code index reads these public repos, so an agent asked about Hero Goggles answers from the code at the commit that runs.
+      Each day Infrared makes a summary video, told by Product: the live sites, the features by pull request and author, DORA numbers and who built them.</p>
+
+      <h2>What the day taught Infrared</h2>
+      <p>Building in public found work for the platform, and we wrote it down: the Node pin above, ECK under GKE Sandbox, <code>port-forward</code> into gVisor
+      pods, tool addresses behind the edge, and a Product delete that never finished (fixed the same day, in release 0.1.6).</p>
+
+      <nav class="pager" aria-label="Next and previous"><a href="gitar.html">&larr; Gitar by Sonar</a><a href="thanks.html">Thanks &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles is open source: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>

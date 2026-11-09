@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dash0 | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html">Architecture</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html" aria-current="page">Dash0</a>
+        <a href="elasticsearch.html">Elasticsearch</a>
+        <a href="gitar.html">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Dash0</h1>
+      <p class="lead">Traces and metrics from influence-api, over OpenTelemetry.</p>
+
+      <div class="sponsor-head"><span class="logo chip"><img src="assets/logos/dash0.png" alt="Dash0" style="height:30px"></span><span class="track">Track: Stop Flying Blind</span></div>
+
+      <h2>What we built</h2>
+      <p>influence-api sends its traces and metrics to Dash0 over OpenTelemetry (OTLP), so every reading, find and alert can be followed from
+      the phone's post to the response. A rule for every pull request keeps it that way: instrument new behaviour, then show it on the dashboard.</p>
+
+      <h2>How it works</h2>
+      <ul>
+        <li><a class="ref" href="https://github.com/save-the-world-org/influence-api/blob/main/telemetry.mjs"><code>influence-api/telemetry.mjs</code></a> starts OpenTelemetry's Node auto-instrumentation before the server
+        (<code>node --import ./telemetry.mjs server.js</code>), only when <code>OTEL_EXPORTER_OTLP_ENDPOINT</code> is set. The zone sets Dash0's endpoint
+        (us-west-2, dataset <code>default</code>) and its token as secret env in <code>OTEL_EXPORTER_OTLP_HEADERS</code>; a local run sends nothing.</li>
+        <li><code>/api/integrations</code> tells the map that telemetry is on and to which host, never a key or a header.</li>
+        <li>The instrumentation rule, <a class="ref" href="https://github.com/save-the-world-org/hero-goggles/blob/main/.gitar/rules/instrumentation.md"><code>hero-goggles/.gitar/rules/instrumentation.md</code></a> (also in influence-api): spans named like
+        <code>influence.find</code>, counters and histograms named <code>influence_&lt;what&gt;_&lt;unit&gt;</code>, a dashboard panel for each, and one
+        structured log line per failure with its trace id.</li>
+      </ul>
+
+      <h2>Status</h2>
+      <p><span class="tag on">Live</span> influence-api's traces and metrics in Dash0 since 9 November 2026, v0.1.4, sent directly over OTLP, without Dash0's operator.</p>
+      <p><span class="tag off">Not live</span> The dashboards as code: the rule names a <code>dashboards/</code> folder of Perses YAML, which Dash0 reads, but no repo has one yet.
+      <span class="tag off">Not live</span> Browser telemetry from hero-goggles.</p>
+
+      <nav class="pager" aria-label="Next and previous"><a href="radar.html">&larr; Skyhook Radar</a><a href="elasticsearch.html">Elasticsearch &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles is open source: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>

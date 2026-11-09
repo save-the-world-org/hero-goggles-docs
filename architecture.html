@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html" aria-current="page">Architecture</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html">Dash0</a>
+        <a href="elasticsearch.html">Elasticsearch</a>
+        <a href="gitar.html">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Architecture</h1>
+      <p class="lead">A beacon, a phone, an API, a static web app and a pair of glasses.</p>
+
+      <figure class="diagram" aria-label="How the parts connect">
+<pre>
+  UWB beacon (DWM3001CDK, Qorvo QANI)
+        │  Bluetooth LE to find, Ultra Wideband to range
+        ▼
+  iPhone: hero-goggles-ios ──── Meta toolkit ────▶ Ray-Ban Display lens
+        │  POST /api/readings, twice a second
+        ▼
+  influence-api  (Node 22, one file)  ───▶ Elasticsearch 9.5   registry, seek targets, alerts, KubeCon search
+        │  /api/events (SSE)    /mcp    ───▶ Dash0               traces and metrics over OTLP
+        │                                ◀── Radar bridge        alerts as Kubernetes Events for Skyhook Radar
+        ▼
+  hero-goggles  (Vite, static)
+     /       the glasses web app (600 x 600, additive display)
+     /live/  the live map, registry, influencer pages, Find by voice, WebMCP
+</pre>
+      </figure>
+
+      <h2>The iPhone and the beacon</h2>
+      <p>Each beacon is a Qorvo DWM3001CDK: Nordic's nRF52833 for Bluetooth LE and Qorvo's DW3110 for UWB. It runs Qorvo's prebuilt
+      Nearby Interaction firmware (QANI). The phone finds it over Bluetooth, then measures it over UWB with Apple's Nearby Interaction.
+      hero-goggles-ios (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles-ios/tree/main/App"><code>hero-goggles-ios/App</code></a>) holds the seek (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles-ios/blob/main/App/Seeker.swift"><code>hero-goggles-ios/App/Seeker.swift</code></a>), the lens
+      (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles-ios/blob/main/App/GlassesCard.swift"><code>hero-goggles-ios/App/GlassesCard.swift</code></a>) and the link to the API (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles-ios/blob/main/App/InfluenceLink.swift"><code>hero-goggles-ios/App/InfluenceLink.swift</code></a>).
+      Board notes, calibration and the rules that cost something are in <a class="ref" href="https://github.com/save-the-world-org/beacon-firmware/tree/main/docs"><code>beacon-firmware/docs</code></a>.</p>
+
+      <h2>influence-api</h2>
+      <p>One file, <a class="ref" href="https://github.com/save-the-world-org/influence-api/blob/main/server.js"><code>influence-api/server.js</code></a>, on Node 22 with OpenTelemetry its only dependency. It keeps the registry of
+      influencers and beacons, takes readings and each phone's GPS and heading, holds each seeker's target, raises distance alerts, and
+      streams everything to the map as Server-Sent Events. The same actions are MCP tools. With <code>ES_URL</code> set, the registry,
+      the targets and the alerts are written to Elasticsearch and survive a restart; readings stay in memory, since the phone resends
+      twice a second.</p>
+      <p>Alerts, per seeker and only for the target's beacon: <strong>closer</strong> below 50, 30, 20, 10 and 5 ft, <strong>found</strong>
+      at 3 ft, <strong>farther</strong> with a 1.5 ft band so jitter never flaps, and <strong>lost</strong> after 10 s without a reading.
+      At most one every 4 s per seeker. Details in <a class="ref" href="https://github.com/save-the-world-org/influence-api/blob/main/README.md"><code>influence-api/README.md</code></a>.</p>
+
+      <h2>hero-goggles, the web app</h2>
+      <p>Two pages from one Vite build. <code>/</code> is the glasses app: 600 x 600 on an additive display, so black is see-through and the
+      app draws light on black; input is arrow keys and Enter from the touchpad and Neural Band; the first load stays under 300 KB and
+      15 requests, so React runs on <code>preact/compat</code>. <code>/live/</code> is the map for phones and laptops, the only page that loads MapLibre
+      (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles/tree/main/src/live"><code>hero-goggles/src/live</code></a>).</p>
+
+      <h2>The live map</h2>
+      <p>The map draws the Salt Palace's outline and a minimap, each beacon at its estimated position, the seekers with their heading, and
+      a banner for each alert. It reads <code>/api/state</code> once, then follows <code>/api/events</code>. Its Integrations panel reads
+      <code>/api/integrations</code> every 5 s and shows Skyhook Radar, Dash0, Elasticsearch and Gitar by Sonar; while the API has none of
+      them, nothing shows and nothing fails (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles/blob/main/src/live/Integrations.jsx"><code>hero-goggles/src/live/Integrations.jsx</code></a>).</p>
+
+      <h2>Where it runs</h2>
+      <p>On Infrared's hosted plane, in the org save-the-world-org: one Product, Hero Goggles, whose umbrella chart deploys the web app
+      and influence-api together. The web app is public at <a href="https://hero-goggles.darkshift.cloud">hero-goggles.darkshift.cloud</a>,
+      the API at <code>influence-api.darkshift.cloud</code>. See <a href="infrared.html">Built on Infrared</a>.</p>
+
+      <nav class="pager" aria-label="Next and previous"><a href="quick-start.html">&larr; Quick start</a><a href="radar.html">Skyhook Radar &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles is open source: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>

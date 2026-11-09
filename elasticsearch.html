@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elasticsearch | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html">Architecture</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html">Dash0</a>
+        <a href="elasticsearch.html" aria-current="page">Elasticsearch</a>
+        <a href="gitar.html">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Elasticsearch</h1>
+      <p class="lead">KubeCon's schedule and Hero Goggles' registry, in one search.</p>
+
+      <div class="sponsor-head"><span class="logo chip"><img src="assets/logos/elasticsearch.png" alt="Elasticsearch" style="height:48px"></span><span class="track">Track: Find the Right Talk</span></div>
+
+      <h2>What we built</h2>
+      <p>Elasticsearch 9.5 holds KubeCon NA 2026's schedule, 600 sessions and 712 speakers from Sessionize, beside Hero Goggles' own registry.
+      One search box on the live map, and the <code>search</code> MCP tool, answer "who is talking about eBPF?" and "find Kunal" alike.
+      It is also influence-api's store: the registry, each seeker's target and every alert survive a deploy.</p>
+
+      <h2>How it works</h2>
+      <ul>
+        <li><code>GET /api/search?q=</code> and the MCP tool <code>search</code> query <code>influence-*,kubecon-*</code> when <code>ES_URL</code> is set, and the registry alone without it
+        (<a class="ref" href="https://github.com/save-the-world-org/influence-api/blob/main/server.js"><code>influence-api/server.js</code></a>).</li>
+        <li>The registry lives in <code>influence-influencers</code> and <code>influence-beacons</code>; the seek targets in <code>seek-targets</code> and the alerts in
+        <code>alerts-influence</code>, both outside the patterns search runs over, so neither shows up as a result.</li>
+        <li><code>registry.seed.json</code> fills only what Elasticsearch does not have, so a restart never undoes an influencer's own edits.</li>
+        <li>Under every search box the map says "Search by Elasticsearch" (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles/blob/main/src/live/Sponsors.jsx"><code>hero-goggles/src/live/Sponsors.jsx</code></a>).</li>
+      </ul>
+
+      <h2>Running it under gVisor</h2>
+      <p>Elasticsearch 9.5.6 and Kibana run in <code>save-the-world-search</code> on the tenants' pool, under GKE Sandbox. Two findings:
+      ECK cannot run there (GKE's gVisor annotation keys from ECK's volume names exceed 63 bytes), so Elasticsearch runs as plain manifests;
+      and Elasticsearch 9 boots under gVisor only with <code>-XX:+StartAttachListener</code>.</p>
+
+      <h2>Status</h2>
+      <p><span class="tag on">Live</span> Search and storage, since 9 November 2026. The schedule was loaded by hand; the loader is not in a public repo.
+      <span class="tag off">Not live</span> Kibana's public address, for the same edge reason as Radar's.</p>
+
+      <nav class="pager" aria-label="Next and previous"><a href="dash0.html">&larr; Dash0</a><a href="gitar.html">Gitar by Sonar &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles is open source: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>

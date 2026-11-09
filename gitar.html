@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gitar by Sonar | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html">Architecture</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html">Dash0</a>
+        <a href="elasticsearch.html">Elasticsearch</a>
+        <a href="gitar.html" aria-current="page">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Gitar by Sonar</h1>
+      <p class="lead">Every pull request reviewed against one rule: instrument it, then show it.</p>
+
+      <div class="sponsor-head"><span class="logo chip"><img src="assets/logos/gitar.svg" alt="Gitar" style="height:34px"></span><span class="logo chip"><img src="assets/logos/sonar.svg" alt="Sonar" style="height:34px"></span><span class="track">Track: Never Merge Broken</span></div>
+
+      <h2>What we built</h2>
+      <p>Gitar, Sonar's AI code verification agent, reviews pull requests on Hero Goggles' repos against our own rule: a change that adds behaviour
+      must trace it, measure it, show it on the dashboard and log its failures. The same rule is given to the org's builder agent on Infrared,
+      so the agent that writes the change and the agent that reviews it read the same standard.</p>
+
+      <h2>How it works</h2>
+      <ul>
+        <li><a class="ref" href="https://github.com/save-the-world-org/hero-goggles/blob/main/.gitar/rules/instrumentation.md"><code>hero-goggles/.gitar/rules/instrumentation.md</code></a> and <a class="ref" href="https://github.com/save-the-world-org/influence-api/blob/main/.gitar/rules/instrumentation.md"><code>influence-api/.gitar/rules/instrumentation.md</code></a>: the rule, in four parts
+        (trace it, measure its outcome, show it, log what a person needs at 3 a.m.).</li>
+        <li>A pull request that adds behaviour without them is not ready: Gitar says which of the four is missing and what to add.</li>
+        <li>The live map's Integrations panel shows Gitar beside the other sponsors (<a class="ref" href="https://github.com/save-the-world-org/hero-goggles/blob/main/src/live/Integrations.jsx"><code>hero-goggles/src/live/Integrations.jsx</code></a>).</li>
+      </ul>
+
+      <h2>Status</h2>
+      <p><span class="tag on">Live</span> The rule in both repos, and Gitar installed on the org. <span class="tag off">Not live</span> Gitar's remaining settings (allowing Infrared's bot, auto-apply off)
+      were still open on 9 November 2026.</p>
+
+      <nav class="pager" aria-label="Next and previous"><a href="elasticsearch.html">&larr; Elasticsearch</a><a href="infrared.html">Built on Infrared &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles is open source: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>

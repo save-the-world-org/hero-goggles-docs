@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Goggles | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html">Architecture</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html">Dash0</a>
+        <a href="elasticsearch.html">Elasticsearch</a>
+        <a href="gitar.html">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Hero Goggles</h1>
+      <p class="lead">Find an influencer at KubeCon by their UWB beacon: distance and direction on an iPhone, in the Meta Ray-Ban Display lens, and aloud, with a live map of the venue.</p>
+
+      <figure class="film">
+        <video controls playsinline preload="metadata" poster="media/hero-goggles-commercial.webp">
+          <source src="media/hero-goggles-commercial.webm" type="video/webm">
+          <source src="media/hero-goggles-commercial.mp4" type="video/mp4">
+          Your browser cannot play this video. <a href="media/hero-goggles-commercial.mp4">Download the commercial</a>.
+        </video>
+        <figcaption>The Hero Goggles commercial.</figcaption>
+      </figure>
+
+      <h2>What it is</h2>
+      <p>Hero Goggles finds a person in a crowd. At KubeCon + CloudNativeCon North America 2026, the people we looked for were two
+      influencers, Kelsey Hightower and Kunal Kushwaha, each carrying a small Ultra Wideband (UWB) beacon. An iPhone ranges the
+      beacon and gives the distance and the way to it on the phone, in the lens of Meta Ray-Ban Display glasses, and aloud. Every
+      reading also reaches a live map of the Salt Palace that anyone can open.</p>
+
+      <div class="cards">
+        <a class="card" href="quick-start.html#glasses"><h3>In the lens</h3><p>A web app for Meta Ray-Ban Display: a list, a map and Find, driven by the Neural Band.</p></a>
+        <a class="card" href="quick-start.html#iphone"><h3>On the iPhone</h3><p>hero-goggles-ios ranges the beacon over UWB and draws the seek in the lens through Meta's toolkit.</p></a>
+        <a class="card" href="quick-start.html#map"><h3>On the live map</h3><p><a href="https://hero-goggles.darkshift.cloud/live/">hero-goggles.darkshift.cloud/live/</a>: the venue, the beacons, the registry, influencer pages and Find by voice.</p></a>
+        <a class="card" href="quick-start.html#mcp"><h3>For agents</h3><p>influence-api's MCP tools and WebMCP in the browser: ask an agent to "find Kunal".</p></a>
+      </div>
+
+      <h2>How a find works</h2>
+      <ol>
+        <li>Someone says who to find: on the glasses, by voice on the map, or through an agent's <code>find_influencer</code> tool. influence-api sets that seeker's target.</li>
+        <li>The iPhone ranges the target's beacon (a Qorvo DWM3001CDK running Qorvo's Nearby Interaction firmware) and posts each reading to influence-api.</li>
+        <li>influence-api works out distance alerts (50, 30, 20, 10 and 5 ft, found at 3 ft, lost) and streams the state to the map.</li>
+        <li>The lens and the map show the distance and the alerts; Skyhook Radar confirms each alert from the cluster's event timeline.</li>
+      </ol>
+
+      <h2>The repositories</h2>
+      <p>Everything is open source under <a href="https://github.com/save-the-world-org">save-the-world-org</a> on GitHub.</p>
+      <table>
+        <thead><tr><th>Repo</th><th>What</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/save-the-world-org/hero-goggles">hero-goggles</a></td><td>The glasses web app and the live map (<code>/live/</code>): Vite, React on <code>preact/compat</code>, MapLibre.</td></tr>
+          <tr><td><a href="https://github.com/save-the-world-org/influence-api">influence-api</a></td><td>The API: registry, readings, seek targets, alerts, live events, search and MCP. One file, no dependencies beyond OpenTelemetry, Node 22.</td></tr>
+          <tr><td><a href="https://github.com/save-the-world-org/hero-goggles-ios">hero-goggles-ios</a></td><td>The iPhone app: Meta's Wearables Device Access Toolkit and the UWB seek, "Hero Finder".</td></tr>
+          <tr><td><a href="https://github.com/save-the-world-org/beacon-firmware">beacon-firmware</a></td><td>Tools and firmware for the DWM3001CDK beacons.</td></tr>
+          <tr><td><a href="https://github.com/save-the-world-org/hero-goggles-docs">hero-goggles-docs</a></td><td>These pages.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Who built it</h2>
+      <p>The Darkshift cofounders, johndietz and jarededwards, in one day, with agents on <a href="infrared.html">Infrared</a>.</p>
+
+      <nav class="pager" aria-label="Next and previous"><span></span><a href="quick-start.html">Quick start &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles is open source: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>
