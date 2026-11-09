@@ -75,3 +75,5 @@ footer p { max-width: 60em; margin: 0 auto; }
   .by span { display: none; }
   main { padding-top: 28px; }
 }
+.sponsors .logo:not(.chip) { background: rgba(217, 245, 243, 0.06); border-radius: 12px; }
+p code, li code { overflow-wrap: anywhere; }
