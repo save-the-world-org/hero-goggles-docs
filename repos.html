@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Repositories | Hero Goggles docs</title>
+  <meta name="description" content="Hero Goggles, by Darkshift: find an influencer at KubeCon by their UWB beacon, on an iPhone and in Meta Ray-Ban Display glasses.">
+  <link rel="icon" href="assets/hero-goggles-color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/hero-goggles-color.svg" alt="" width="34" height="34"><span>Hero Goggles</span><em>docs</em></a>
+    <a class="by" href="https://darkshift.io"><span>by</span><img src="assets/logos/darkshift-landscape-white.svg" alt="Darkshift" height="22"></a>
+  </header>
+  <div class="shell">
+    <nav class="side" aria-label="Pages">
+        <a href="index.html">Overview</a>
+        <a href="quick-start.html">Quick start</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="repos.html" aria-current="page">Repositories</a>
+        <span class="nav-group">Integrations</span>
+        <a href="radar.html">Skyhook Radar</a>
+        <a href="dash0.html">Dash0</a>
+        <a href="elasticsearch.html">Elasticsearch</a>
+        <a href="gitar.html">Gitar by Sonar</a>
+        <span class="nav-group">More</span>
+        <a href="infrared.html">Built on Infrared</a>
+        <a href="thanks.html">Thanks</a>
+    </nav>
+    <main>
+      <h1>Repositories</h1>
+      <p class="lead">Every part of Hero Goggles is in a public repository under <a href="https://github.com/save-the-world-org">save-the-world-org</a> on GitHub. This page lists each one: what it is, where it runs, how to run it and where to read more.</p>
+      <table>
+        <thead><tr><th>Repo</th><th>What</th><th>Live</th><th>Latest</th></tr></thead>
+        <tbody>
+          <tr><td><a href="#hero-goggles">hero-goggles</a></td><td>The glasses web app and the live map</td><td><a href="https://hero-goggles.darkshift.cloud/live/">hero-goggles.darkshift.cloud</a></td><td>v0.2.1</td></tr>
+          <tr><td><a href="#influence-api">influence-api</a></td><td>The API: registry, readings, alerts, search, MCP</td><td><a href="https://influence-api.darkshift.cloud/healthz">influence-api.darkshift.cloud</a></td><td>v0.2.1</td></tr>
+          <tr><td><a href="#hero-goggles-ios">hero-goggles-ios</a></td><td>The iPhone app: UWB seek, drawn in the lens</td><td>On your iPhone, built from source</td><td>v0.1.0</td></tr>
+          <tr><td><a href="#beacon-firmware">beacon-firmware</a></td><td>Tools and firmware for the UWB beacons</td><td>On a Qorvo DWM3001CDK</td><td>main</td></tr>
+          <tr><td><a href="#hero-goggles-docs">hero-goggles-docs</a></td><td>These docs and the commercial</td><td><a href="https://hero-goggles-docs.darkshift.cloud">hero-goggles-docs.darkshift.cloud</a></td><td>v0.1.1</td></tr>
+        </tbody>
+      </table>
+      <h2 id="hero-goggles"><a href="https://github.com/save-the-world-org/hero-goggles">hero-goggles</a></h2>
+      <p>The Meta Ray-Ban Display web app (a list, a map and Find, driven by the Neural Band) and, at <code>/live/</code>, the live map of the Salt Palace: the beacons, Skyhook Radar's alerts, the registry, influencer pages, Find by voice, WebMCP, and the integrations with each sponsor's logo.</p>
+      <table><tbody>
+        <tr><th>Source</th><td><a href="https://github.com/save-the-world-org/hero-goggles">github.com/save-the-world-org/hero-goggles</a></td></tr>
+        <tr><th>Runs at</th><td><a href="https://hero-goggles.darkshift.cloud">hero-goggles.darkshift.cloud</a> and <a href="https://hero-goggles.darkshift.cloud/live/">/live/</a>, an Infrared Product on the hosted plane</td></tr>
+        <tr><th>Built with</th><td>Vite, React on <code>preact/compat</code>, MapLibre; built by Paketo buildpacks and served by nginx</td></tr>
+        <tr><th>Run it</th><td><code>npm install</code>, <code>npm run dev</code> (http://localhost:5173), <code>npm run build</code></td></tr>
+        <tr><th>Check</th><td><code>npm run build</code>; Gitar by Sonar reviews each pull request against <code>.gitar/rules/instrumentation.md</code></td></tr>
+        <tr><th>Read more</th><td><a href="quick-start.html#glasses">Quick start</a>, <a href="radar.html">Skyhook Radar</a>, <a href="gitar.html">Gitar by Sonar</a></td></tr>
+      </tbody></table>
+      <h2 id="influence-api"><a href="https://github.com/save-the-world-org/influence-api">influence-api</a></h2>
+      <p>The API behind Hero Goggles: the beacon and influencer registry, live readings from the phone, who each seeker is looking for, distance alerts, a live event stream for the map, search over KubeCon's sessions and speakers, and the same actions as MCP tools (<code>find_influencer</code>, <code>where_is</code>, <code>list_influencers</code>, <code>search</code>).</p>
+      <table><tbody>
+        <tr><th>Source</th><td><a href="https://github.com/save-the-world-org/influence-api">github.com/save-the-world-org/influence-api</a></td></tr>
+        <tr><th>Runs at</th><td><a href="https://influence-api.darkshift.cloud/healthz">influence-api.darkshift.cloud</a>; MCP at <code>https://influence-api.darkshift.cloud/mcp</code></td></tr>
+        <tr><th>Built with</th><td>One file, <code>server.js</code>, on Node 22; OpenTelemetry to Dash0; Elasticsearch when <code>ES_URL</code> is set</td></tr>
+        <tr><th>Run it</th><td><code>npm start</code> (http://localhost:8080); <code>claude mcp add --transport http influence https://influence-api.darkshift.cloud/mcp</code></td></tr>
+        <tr><th>Check</th><td><code>npm test</code>: the server as real processes, against a fake Elasticsearch and with none</td></tr>
+        <tr><th>Read more</th><td><a href="architecture.html">Architecture</a>, <a href="elasticsearch.html">Elasticsearch</a>, <a href="dash0.html">Dash0</a>, <a href="quick-start.html#mcp">MCP</a></td></tr>
+      </tbody></table>
+      <h2 id="hero-goggles-ios"><a href="https://github.com/save-the-world-org/hero-goggles-ios">hero-goggles-ios</a></h2>
+      <p>The iPhone app on Meta's Wearables Device Access Toolkit: it draws on the Ray-Ban Display glasses, takes Neural Band presses, and seeks a UWB beacon (&ldquo;Hero Finder&rdquo;), with the distance and the way on the phone, in the lens and aloud. Each reading goes to influence-api.</p>
+      <table><tbody>
+        <tr><th>Source</th><td><a href="https://github.com/save-the-world-org/hero-goggles-ios">github.com/save-the-world-org/hero-goggles-ios</a></td></tr>
+        <tr><th>Runs at</th><td>Your own iPhone, signed with your own Apple Developer team; or a simulator with Meta's simulated glasses</td></tr>
+        <tr><th>Built with</th><td>Swift, SwiftUI, Nearby Interaction, Meta's Wearables Device Access Toolkit 1.0.1; Xcode 27.1 or later and XcodeGen</td></tr>
+        <tr><th>Run it</th><td><code>make sim</code> (simulator), <code>make device</code> (your iPhone)</td></tr>
+        <tr><th>Check</th><td><code>make verify</code></td></tr>
+        <tr><th>Read more</th><td><a href="quick-start.html#iphone">Quick start</a>, <a href="architecture.html">Architecture</a></td></tr>
+      </tbody></table>
+      <h2 id="beacon-firmware"><a href="https://github.com/save-the-world-org/beacon-firmware">beacon-firmware</a></h2>
+      <p>Firmware and tools for the UWB beacons, Qorvo DWM3001CDK boards: <code>uwbprobe</code>, a test firmware of our own with no SDK; our patches to Qorvo's Nearby Interaction firmware and its build; scripts to identify, back up and flash a board; serial and Bluetooth tools. Qorvo's SDK is never in the repo.</p>
+      <table><tbody>
+        <tr><th>Source</th><td><a href="https://github.com/save-the-world-org/beacon-firmware">github.com/save-the-world-org/beacon-firmware</a></td></tr>
+        <tr><th>Runs at</th><td>A DWM3001CDK board, carried by the person to be found</td></tr>
+        <tr><th>Built with</th><td>C (Apple's clang), probe-rs, Python's standard library, shell</td></tr>
+        <tr><th>Run it</th><td><code>brew bundle --file=Brewfile</code>, <code>scripts/identify</code>, <code>scripts/backup</code>, <code>make flash-uwbprobe</code></td></tr>
+        <tr><th>Check</th><td><code>make verify</code></td></tr>
+        <tr><th>Read more</th><td><a href="architecture.html">Architecture</a></td></tr>
+      </tbody></table>
+      <h2 id="hero-goggles-docs"><a href="https://github.com/save-the-world-org/hero-goggles-docs">hero-goggles-docs</a></h2>
+      <p>These pages: the overview with the commercial, the quick start, the architecture, a page per sponsor integration, how Infrared builds and hosts it all, and the thanks.</p>
+      <table><tbody>
+        <tr><th>Source</th><td><a href="https://github.com/save-the-world-org/hero-goggles-docs">github.com/save-the-world-org/hero-goggles-docs</a></td></tr>
+        <tr><th>Runs at</th><td><a href="https://hero-goggles-docs.darkshift.cloud">hero-goggles-docs.darkshift.cloud</a>, an Infrared Product on the hosted plane</td></tr>
+        <tr><th>Built with</th><td>Plain HTML and one stylesheet, no build step</td></tr>
+        <tr><th>Run it</th><td>Any static server, e.g. <code>python3 -m http.server</code></td></tr>
+        <tr><th>Check</th><td>None beyond the deploy's smoke check</td></tr>
+        <tr><th>Read more</th><td><a href="index.html">Overview</a>, <a href="infrared.html">Built on Infrared</a></td></tr>
+      </tbody></table>
+      <nav class="pager" aria-label="Next and previous"><a href="architecture.html">&larr; Architecture</a><a href="radar.html">Skyhook Radar &rarr;</a></nav>
+    </main>
+  </div>
+  <footer>
+    <p>Hero Goggles' code is public: <a href="https://github.com/save-the-world-org">github.com/save-the-world-org</a>. Built at the Cloud Native Hackathon by WeMakeDevs, Salt Lake City, 9 November 2026. Built and hosted on <a href="infrared.html">Infrared</a> by Darkshift.</p>
+  </footer>
+</body>
+</html>
