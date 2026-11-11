@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hero Goggles · the film</title>
+<meta name="description" content="Hero Goggles, the film: find the people you came to meet at KubeCon through Ray-Ban Display, a beacon and a live map, with Skyhook Radar, Dash0, Elasticsearch and Gitar by Sonar wired in, built and hosted on Infrared by Darkshift.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="video.other">
+<meta property="og:title" content="Hero Goggles · the film">
+<meta property="og:description" content="Find your heroes at KubeCon. Built in one day at the Cloud Native Hackathon by WeMakeDevs, built and hosted on Infrared by Darkshift.">
+<meta property="og:url" content="https://hero-goggles-docs.darkshift.cloud/watch.html">
+<meta property="og:image" content="https://hero-goggles-docs.darkshift.cloud/media/hero-goggles-commercial.webp">
+<meta property="og:video" content="https://hero-goggles-docs.darkshift.cloud/media/hero-goggles-commercial.mp4">
+<meta property="og:video:type" content="video/mp4">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+video{position:fixed;inset:0;width:100vw;height:100dvh;object-fit:contain;background:#000}
+button{position:fixed;font:600 14px/1 system-ui,-apple-system,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#D9F5F3;background:rgba(1,28,38,.72);border:1px solid rgba(61,169,146,.6);padding:12px 18px;cursor:pointer;backdrop-filter:blur(6px);transition:opacity .4s}
+button:hover,button:focus-visible{background:rgba(61,169,146,.9);color:#011C26;outline:none}
+#sound{left:50%;bottom:max(28px,env(safe-area-inset-bottom));transform:translateX(-50%)}
+#fs{right:max(16px,env(safe-area-inset-right));top:max(16px,env(safe-area-inset-top));padding:10px 12px}
+body.idle button{opacity:0;pointer-events:none}
+body.idle{cursor:none}
+</style>
+</head>
+<body>
+<video id="v" autoplay muted loop playsinline preload="auto" poster="media/hero-goggles-commercial.webp" aria-label="Hero Goggles, the film, 77 seconds with narration and music.">
+<source src="media/hero-goggles-commercial.mp4" type="video/mp4">
+<source src="media/hero-goggles-commercial.webm" type="video/webm">
+</video>
+<button id="sound" type="button">🔊 Tap for sound</button>
+<button id="fs" type="button" aria-label="Fullscreen">⤢</button>
+<script>
+// Full-page player. Browsers only autoplay muted, so it starts muted and loops; a tap anywhere turns the sound on
+// and starts it from the top. ?v=pitch plays our hackathon pitch cut instead, from darkshift.io.
+(function () {
+  var v = document.getElementById('v'), sound = document.getElementById('sound'), fs = document.getElementById('fs');
+  if (new URLSearchParams(location.search).get('v') === 'pitch') {
+    var base = 'https://darkshift.io/media/video/';
+    v.poster = base + 'posters/hackathon-pitch.webp';
+    v.setAttribute('aria-label', 'Our pitch at the Cloud Native Hackathon, two minutes, with captions.');
+    v.innerHTML = '<source src="' + base + 'hackathon-pitch.mp4" type="video/mp4"><source src="' + base + 'hackathon-pitch.webm" type="video/webm">';
+    document.title = 'Hero Goggles · the pitch';
+    v.load();
+  }
+  function start() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  start();
+  function unmute() {
+    if (!v.muted) return;
+    v.muted = false; v.currentTime = 0; start();
+    sound.textContent = '🔇 Mute';
+  }
+  sound.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (v.muted) unmute(); else { v.muted = true; sound.textContent = '🔊 Tap for sound'; }
+  });
+  v.addEventListener('click', function () { if (v.muted) unmute(); else if (v.paused) start(); else v.pause(); });
+  fs.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var el = document.documentElement;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'f') fs.click();
+    else if (e.key === 'm') sound.click();
+    else if (e.key === ' ') { e.preventDefault(); v.click(); }
+  });
+  var t;
+  function wake() { document.body.classList.remove('idle'); clearTimeout(t); t = setTimeout(function () { if (!v.muted) document.body.classList.add('idle'); }, 2500); }
+  ['mousemove', 'touchstart', 'keydown'].forEach(function (n) { document.addEventListener(n, wake, { passive: true }); });
+  wake();
+})();
+</script>
+</body>
+</html>

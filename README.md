@@ -13,6 +13,7 @@ A static site: plain HTML pages and one stylesheet, no build step and no depende
 | `radar.html`, `dash0.html`, `elasticsearch.html`, `gitar.html` | One page per sponsor integration |
 | `infrared.html` | How Infrared by Darkshift builds and hosts it |
 | `thanks.html` | The hackathon, its sponsors and partners |
+| `watch.html` | The film alone, full page: autoplays muted and loops, a tap turns the sound on; `?v=pitch` plays the pitch cut from darkshift.io |
 | `assets/site.css` | The styles: Darkshift's palette, Syncopate headlines, Google Sans Flex text |
 | `assets/logos/` | Sponsor and Darkshift logos, copied from their own files, never redrawn |
 | `media/` | The commercial: `hero-goggles-commercial.mp4`, `.webm` and the poster `.webp` |
